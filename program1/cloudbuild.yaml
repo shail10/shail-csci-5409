@@ -1,7 +1,15 @@
 steps:
   # Step 1: Build Docker Image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', '${_IMAGE_NAME}:latest', '-f', 'Dockerfile', '.']
+    args:
+      [
+        'build',
+        '-t',
+        '${_IMAGE_NAME}:latest',
+        '-f',
+        'program1/Dockerfile',
+        'program1',
+      ]
 
   # Step 2: Push Image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -24,9 +32,9 @@ steps:
     args:
       - 'apply'
       - '-f'
-      - 'deployment.yaml'
+      - 'program1/deployment.yaml'
       - '-f'
-      - 'service.yaml'
+      - 'program1/service.yaml'
 
   # Step 5: Restart Deployment to Pull the New Image
   - name: 'gcr.io/cloud-builders/kubectl'
