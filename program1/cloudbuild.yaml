@@ -7,7 +7,7 @@ steps:
         '-t',
         '${_IMAGE_NAME}:latest',
         '-f',
-        'program1/Dockerfile',
+        'program1/dockerfile',
         'program1',
       ]
 
