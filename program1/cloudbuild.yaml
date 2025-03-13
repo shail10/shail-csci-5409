@@ -15,19 +15,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '${_IMAGE_NAME}:latest']
 
-  # Step 3: Authenticate kubectl with GKE
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      [
-        'container',
-        'clusters',
-        'get-credentials',
-        '${_GKE_CLUSTER}',
-        '--zone',
-        '${_GKE_ZONE}',
-      ]
-
-  # Step 4: Deploy Kubernetes Deployment and Service
+  # Step 3: kubectl
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'apply'
@@ -35,10 +23,9 @@ steps:
       - 'program1/deployment.yaml'
       - '-f'
       - 'program1/service.yaml'
-
-  # Step 5: Restart Deployment to Pull the New Image
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['rollout', 'restart', 'deployment/program1-deployment']
+    env:
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+      - 'CLOUDSDK_COMPUTE_ZONE=${_GKE_ZONE}'
 
 substitutions:
   _IMAGE_NAME: 'us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1'
