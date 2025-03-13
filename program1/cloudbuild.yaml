@@ -1,23 +1,40 @@
 steps:
   # Step 1: Build Docker Image
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'build',
-        '-t',
-        '${_IMAGE_NAME}:latest',
-        '-f',
-        'program1/dockerfile',
-        'program1',
-      ]
+    args: ['build', '-t', '${_IMAGE_NAME}:latest', '-f', 'Dockerfile', '.']
 
   # Step 2: Push Image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '${_IMAGE_NAME}:latest']
 
+  # Step 3: Authenticate kubectl with GKE
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'container',
+        'clusters',
+        'get-credentials',
+        '${_GKE_CLUSTER}',
+        '--zone',
+        '${_GKE_ZONE}',
+      ]
+
+  # Step 4: Deploy Kubernetes Deployment and Service
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment.yaml'
+      - '-f'
+      - 'service.yaml'
+
+  # Step 5: Restart Deployment to Pull the New Image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['rollout', 'restart', 'deployment/program1-deployment']
+
 substitutions:
   _IMAGE_NAME: 'us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1'
-  _GKE_CLUSTER: 'shail-kubernetes-assignment-cluster'
+  _GKE_CLUSTER: 'shail-gke-cluster-5409'
   _GKE_ZONE: 'us-central1-c'
 
 options:

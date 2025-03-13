@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: program1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: program1
+  template:
+    metadata:
+      labels:
+        app: program1
+    spec:
+      containers:
+        - name: program1
+          image: us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1:latest
+          ports:
+            - containerPort: 6000
