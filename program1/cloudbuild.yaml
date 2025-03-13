@@ -1,0 +1,24 @@
+steps:
+  # Step 1: Build Docker Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        '${_IMAGE_NAME}:latest',
+        '-f',
+        'program1/dockerfile',
+        'program1',
+      ]
+
+  # Step 2: Push Image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE_NAME}:latest']
+
+substitutions:
+  _IMAGE_NAME: 'us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1'
+  _GKE_CLUSTER: 'shail-kubernetes-assignment-cluster'
+  _GKE_ZONE: 'us-central1-c'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
