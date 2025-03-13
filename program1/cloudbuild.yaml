@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Build Docker Image
+  # Step 1: Build Docker Image (Fix Dockerfile Path)
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -42,7 +42,7 @@ steps:
 
 substitutions:
   _IMAGE_NAME: 'us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1'
-  _GKE_CLUSTER: 'shail-gke-cluster-5409'
+  _GKE_CLUSTER: 'shail-kubernetes-assignment-cluster'
   _GKE_ZONE: 'us-central1-c'
 
 options:
