@@ -15,5 +15,3 @@ spec:
       containers:
         - name: program1
           image: us-docker.pkg.dev/liquid-fort-453318-q8/shail-csci-5409-artifact-registry/program1:latest
-          ports:
-            - containerPort: 6000
