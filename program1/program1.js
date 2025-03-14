@@ -9,7 +9,7 @@ const PORT = 6000
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('Container 1 is running')
+  res.send('Container 1 running')
 })
 
 app.listen(PORT, () => {
